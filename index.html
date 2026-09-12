@@ -161,32 +161,30 @@ body{
 
 const CONFIG={
 
-  logo:"images/logo.png",
+  logo:"https://jiwusales.github.io/imgh/images/20260912_181242.png",
 
-  name:"JIWU吉物販售・吉伊卡哇",
+  name:"JIWU吉物販售",
 
   bio:`花花ㄉ快樂寶寶吉散地 𓂃𓈒𓏸
-下面有連結可以找到我 ʕ( ˙ᴥ˙ )ʔ
-台中朋朋歡迎一起自取 ☆`,
+下面有連結可以找到我
+台中朋朋歡迎自取 ☆`,
 
   instagram:{
-    url:"https://www.instagram.com/jiwu_sales/",
-    followers:12500
-  },
+  url:"https://www.instagram.com/jiwu_sales/"
+},
 
-  threads:{
-    url:"https://www.threads.net/@jiwu_sales",
-    followers:8200
-  },
+threads:{
+  url:"https://www.threads.com/@jiwu_sales"
+},
 
   links:[
     {
-      icon:"★",
+      icon:"https://raw.githubusercontent.com/jiwusales/imgh/main/images_1350/icon_9a717cff.png",
       title:"吉物官網 ♡ 寶寶目錄在這邊",
       url:"https://jiwusales.github.io/jiwu_menu/"
     },
     {
-      icon:"📣",
+      icon:"https://raw.githubusercontent.com/jiwusales/imgh/main/images_1350/icon_9a717cff.png",
       title:"最新開團",
       url:"https://jiwusales.github.io/jiwu_menu/NEWGOODS.html"
     },
@@ -196,12 +194,12 @@ const CONFIG={
       url:"https://line.me/R/ti/p/@tei8245t?ts=02051400&oat_content=url"
     },
     {
-      icon:"⚡",
+      icon:"https://jiwusales.github.io/imgh/images/20260912_183953.png",
       title:"LINE群傳送門",
       url:"https://line.me/ti/g2/aS1Oba3cd9F17Y4FGZGIUmCKTYsrbiXuRA5hXw?utm_source=invitation&utm_medium=link_copy&utm_campaign=default"
     },
     {
-      icon:"https://jiwusales.github.io/imgh/images/20260912_165151.png",
+      icon:"https://jiwusales.github.io/imgh/images/20260912_180747.png",
       title:"JIWU 吉伊圖鑑",
       url:"https://jiwusales.github.io/jiwusales_chiikawa/"
     },
@@ -227,8 +225,30 @@ $("bio").textContent=CONFIG.bio;
 $("igLink").href=CONFIG.instagram.url;
 $("threadsLink").href=CONFIG.threads.url;
 
-$("igCount").textContent=formatCount(CONFIG.instagram.followers);
-$("threadsCount").textContent=formatCount(CONFIG.threads.followers);
+async function loadFollowers(){
+  const list=[
+    ["igCount",CONFIG.instagram.url],
+    ["threadsCount",CONFIG.threads.url]
+  ];
+
+  await Promise.all(list.map(async([id,url])=>{
+    try{
+      $(id).textContent="...";
+      const r=await fetch(
+        "https://pulse.walls.sh/profile?url="+encodeURIComponent(url)
+      );
+      if(!r.ok)throw new Error();
+      const d=await r.json();
+      $(id).textContent=d.followers!=null
+        ?formatCount(d.followers)
+        :"--";
+    }catch(e){
+      $(id).textContent="--";
+    }
+  }));
+}
+
+loadFollowers();
 
 $("links").innerHTML=CONFIG.links.map(x=>`
 <a class="link" href="${x.url}" target="_blank">
