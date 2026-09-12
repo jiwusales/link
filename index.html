@@ -162,7 +162,7 @@ body{
   <div id="links" class="links"></div>
 
   <div class="footer">
-    JIWU © <span id="year"></span>
+    JIWU © <span id="2024"></span>
   </div>
 
 </div>
@@ -226,36 +226,72 @@ const CONFIG={
 };
 
 /* ==================================================
+   ↑↑↑ 以後主要修改到這裡 ↑↑↑
+================================================== */
+
+const FOLLOWER_API=
+"https://script.google.com/macros/s/AKfycby40cWwvCULzxaKi6eO22sa9aYwuD8hHkvk6lUM90sQSKjr9r-4CCRUq09NUM-wd0e9/exec";
+
+const $=id=>document.getElementById(id);
+
+/* 頁面資料 */
+$("logo").src=CONFIG.logo;
+$("name").textContent=CONFIG.name;
+$("bio").textContent=CONFIG.bio;
+
+$("igLink").href=CONFIG.instagram.url;
+$("threadsLink").href=CONFIG.threads.url;
+
+$("links").innerHTML=CONFIG.links.map(x=>`
+<a class="link" href="${x.url}" target="_blank">
+  <img class="link-icon" src="${x.icon}">
+  <span>${x.title}</span>
+</a>
+`).join("");
+
+$("year").textContent=new Date().getFullYear();
+
+
+/* ==================================================
    追蹤人數
 ================================================== */
 
 function formatCount(n){
   n=Number(n);
-  if(!Number.isFinite(n))return "--";
-  if(n>=10000)return (n/10000).toFixed(1).replace(".0","")+"萬";
-  if(n>=1000)return (n/1000).toFixed(1).replace(".0","")+"K";
+
+  if(!Number.isFinite(n))
+    return "--";
+
+  if(n>=10000)
+    return (n/10000).toFixed(1).replace(".0","")+"萬";
+
+  if(n>=1000)
+    return (n/1000).toFixed(1).replace(".0","")+"K";
+
   return n.toLocaleString();
 }
 
 window.followerResult=function(d){
+
   console.log("GAS 回傳：",d);
 
   $("igCount").textContent=
-    d?.instagram!=null?formatCount(d.instagram):"--";
+    d?.instagram!=null
+      ?formatCount(d.instagram)
+      :"--";
 
   $("threadsCount").textContent=
-    d?.threads!=null?formatCount(d.threads):"--";
+    d?.threads!=null
+      ?formatCount(d.threads)
+      :"--";
 };
 
 function loadFollowers(){
+
   $("igCount").textContent="...";
   $("threadsCount").textContent="...";
 
-  const old=document.getElementById("followerApiScript");
-  if(old)old.remove();
-
   const s=document.createElement("script");
-  s.id="followerApiScript";
 
   s.src=
     FOLLOWER_API+
@@ -265,7 +301,6 @@ function loadFollowers(){
     "&t="+Date.now();
 
   s.onerror=()=>{
-    console.error("GAS 載入失敗");
     $("igCount").textContent="--";
     $("threadsCount").textContent="--";
   };
