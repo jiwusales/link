@@ -17,10 +17,25 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,B
 .social{display:flex;align-items:center;justify-content:center;width:42px;height:42px;text-decoration:none}
 .social-icon{display:block;width:32px;height:32px;object-fit:contain}
 .links{display:flex;flex-direction:column;gap:15px}
-.link{display:grid;grid-template-columns:42px 1fr;align-items:center;min-height:52px;padding:10px 17px;border:2px solid var(--main);border-radius:16px;background:#fff;color:var(--main);text-decoration:none;font-size:16px;font-weight:700;transition:.15s}
-.link:active{transform:scale(.98);background:var(--light)}
-.link-icon{width:25px;height:25px;object-fit:contain;justify-self:start}
-.link span{width:100%;text-align:center}
+.link{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:52px;
+  padding:10px 45px;
+  border:2px solid var(--main);
+  border-radius:16px;
+  background:#fff;
+  color:var(--main);
+  text-decoration:none;
+  text-align:center;
+  font-size:16px;
+  font-weight:700;
+  transition:.15s;
+}
+.link-icon{position:absolute;left:17px;width:25px;height:25px;object-fit:contain}
+.link span{text-align:center}
 .footer{margin-top:30px;display:flex;justify-content:center;align-items:center;gap:6px;color:#bbb;font-size:11px}
 #viewWrap{display:none}
 @media(max-width:380px){
@@ -69,32 +84,32 @@ const CONFIG={
   links:[
     {
       icon:"https://raw.githubusercontent.com/jiwusales/imgh/main/images_1350/icon_9a717cff.png",
-      title:"吉物寶寶目錄",
+      title:"吉物官網 ☺︎ 寶寶目錄在這邊 (՞•֊•՞)",
       url:"https://jiwusales.github.io/jiwu_menu/"
     },
     {
       icon:"https://jiwusales.github.io/imgh/images/20260912_204441.png",
-      title:"最新開團.ᐟ.ᐟ",
+      title:"最新開團 (๑•̀ᴗ-)b",
       url:"https://jiwusales.github.io/jiwu_menu/NEWGOODS.html"
     },
     {
       icon:"https://jiwusales.github.io/imgh/images/20260912_165412.png",
-      title:"這邊找花花 ♡",
+      title:"這邊找花花 ˚ෆ*₊",
       url:"https://line.me/R/ti/p/@tei8245t?ts=02051400&oat_content=url"
     },
     {
       icon:"https://jiwusales.github.io/imgh/images/20260912_183953.png",
-      title:"LINE群傳送門",
+      title:"LINE群傳送門 ˚➶ ｡˚",
       url:"https://line.me/ti/g2/aS1Oba3cd9F17Y4FGZGIUmCKTYsrbiXuRA5hXw?utm_source=invitation&utm_medium=link_copy&utm_campaign=default"
     },
     {
       icon:"https://jiwusales.github.io/imgh/images/20260912_184702.png",
-      title:"JIWU 吉伊寶寶圖鑑",
+      title:"JIWU吉伊圖鑑 (⸝⸝。ꈊ。⸝⸝)",
       url:"https://jiwusales.github.io/jiwusales_chiikawa/"
     },
     {
       icon:"https://jiwusales.github.io/imgh/images/20260912_165122.png",
-      title:"JIWU 白熊寶寶圖鑑",
+      title:"JIWU白熊圖鑑 ฅ՞•ﻌ•՞ฅ",
       url:"https://jiwusales.github.io/jiwusales_nagano/"
     }
   ]
