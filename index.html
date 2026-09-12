@@ -3,508 +3,127 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-
 <title>JIWU 吉物販售</title>
-
 <style>
-
-*{
-  box-sizing:border-box;
-}
-
-:root{
-  --main:#786956;
-  --light:#d8c5b5;
-  --bg:#fafafa;
-  --text:#333;
-}
-
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Noto Sans TC",
-    "Segoe UI",
-    sans-serif;
-}
-
-.page{
-  width:100%;
-  max-width:520px;
-  min-height:100vh;
-  margin:auto;
-  padding:25px 22px 45px;
-}
-
-
-/* =========================
-   個人資訊
-========================= */
-
-.profile{
-  text-align:center;
-}
-
-
-/* 最上方 Logo
-   要改尺寸就改 width
-*/
-
-.logo{
-  display:block;
-  width:120px;
-  height:auto;
-  object-fit:contain;
-  margin:0 auto;
-}
-
-
-/* JIWU吉物販售 */
-
-.name{
-  margin-top:10px;
-  font-size:20px;
-  font-weight:800;
-  color:var(--main);
-}
-
-
-/* 自我介紹 */
-
-.bio{
-  margin-top:8px;
-  font-size:15px;
-  line-height:1.8;
-  white-space:pre-line;
-}
-
-
-/* =========================
-   社群圖示
-========================= */
-
-.socials{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:15px;
-  margin:20px 0 30px;
-}
-
-.social{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  width:42px;
-  height:42px;
-  text-decoration:none;
-}
-
-.social-icon{
-  display:block;
-  width:32px;
-  height:32px;
-  object-fit:contain;
-}
-
-
-/* =========================
-   連結按鈕
-========================= */
-
-.links{
-  display:flex;
-  flex-direction:column;
-  gap:15px;
-}
-
-.link{
-  position:relative;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  min-height:52px;
-
-  padding:10px 45px;
-
-  border:2px solid var(--main);
-  border-radius:16px;
-
-  background:#fff;
-
-  color:var(--main);
-
-  text-decoration:none;
-  text-align:center;
-
-  font-size:16px;
-  font-weight:700;
-
-  transition:.15s;
-}
-
-.link:active{
-  transform:scale(.98);
-  background:var(--light);
-}
-
-
-/* 左側小圖示 */
-
-.link-icon{
-  position:absolute;
-  left:17px;
-
-  width:25px;
-  height:25px;
-
-  object-fit:contain;
-}
-
-
-/* =========================
-   Footer
-========================= */
-
-.footer{
-  margin-top:30px;
-
-  text-align:center;
-
-  color:#bbb;
-
-  font-size:11px;
-}
-
-
-/* =========================
-   小螢幕
-========================= */
-
+*{box-sizing:border-box}
+:root{--main:#786956;--light:#d8c5b5;--bg:#fafafa;--text:#333}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","Segoe UI",sans-serif}
+.page{width:100%;max-width:520px;min-height:100vh;margin:auto;padding:25px 22px 45px}
+.profile{text-align:center}
+.logo{display:block;width:120px;height:auto;object-fit:contain;margin:0 auto}
+.name{margin-top:10px;font-size:20px;font-weight:800;color:var(--main)}
+.bio{margin-top:8px;font-size:15px;line-height:1.8;white-space:pre-line}
+.socials{display:flex;justify-content:center;align-items:center;gap:15px;margin:20px 0 30px}
+.social{display:flex;align-items:center;justify-content:center;width:42px;height:42px;text-decoration:none}
+.social-icon{display:block;width:32px;height:32px;object-fit:contain}
+.links{display:flex;flex-direction:column;gap:15px}
+.link{display:grid;grid-template-columns:42px 1fr;align-items:center;min-height:52px;padding:10px 17px;border:2px solid var(--main);border-radius:16px;background:#fff;color:var(--main);text-decoration:none;font-size:16px;font-weight:700;transition:.15s}
+.link:active{transform:scale(.98);background:var(--light)}
+.link-icon{width:25px;height:25px;object-fit:contain;justify-self:start}
+.link span{width:100%;text-align:center}
+.footer{margin-top:30px;display:flex;justify-content:center;align-items:center;gap:6px;color:#bbb;font-size:11px}
+#viewWrap{display:none}
 @media(max-width:380px){
-
-  .page{
-    padding-left:15px;
-    padding-right:15px;
-  }
-
-  .link{
-    font-size:14px;
-  }
-
+  .page{padding-left:15px;padding-right:15px}
+  .link{font-size:14px}
 }
-
 </style>
 </head>
-
-
 <body>
-
 <div class="page">
-
-
-  <!-- =========================
-       上方個人資訊
-  ========================== -->
-
   <div class="profile">
-
-    <img
-      id="logo"
-      class="logo"
-    >
-
-    <div
-      id="name"
-      class="name">
-    </div>
-
-    <div
-      id="bio"
-      class="bio">
-    </div>
-
-
-    <!-- 社群 -->
-
+    <img id="logo" class="logo">
+    <div id="name" class="name"></div>
+    <div id="bio" class="bio"></div>
     <div class="socials">
-
-
-      <!-- Facebook -->
-
-      <a
-        id="facebookLink"
-        class="social"
-        target="_blank">
-
-        <img
-          class="social-icon"
-          src="https://jiwusales.github.io/imgh/images/20260912_200545.png"
-        >
-
+      <a id="facebookLink" class="social" target="_blank">
+        <img class="social-icon" src="https://jiwusales.github.io/imgh/images/20260912_200545.png">
       </a>
-
-
-      <!-- Instagram -->
-
-      <a
-        id="igLink"
-        class="social"
-        target="_blank">
-
-        <img
-          class="social-icon"
-          src="https://jiwusales.github.io/imgh/images/20260912_184418.png"
-        >
-
+      <a id="igLink" class="social" target="_blank">
+        <img class="social-icon" src="https://jiwusales.github.io/imgh/images/20260912_184418.png">
       </a>
-
-
-      <!-- Threads -->
-
-      <a
-        id="threadsLink"
-        class="social"
-        target="_blank">
-
-        <img
-          class="social-icon"
-          src="https://jiwusales.github.io/imgh/images/20260912_184428.png"
-        >
-
+      <a id="threadsLink" class="social" target="_blank">
+        <img class="social-icon" src="https://jiwusales.github.io/imgh/images/20260912_184428.png">
       </a>
-
-
     </div>
-
   </div>
 
-
-  <!-- =========================
-       主要連結
-  ========================== -->
-
-  <div
-    id="links"
-    class="links">
-  </div>
-
+  <div id="links" class="links"></div>
 
   <div class="footer">
-    JIWU © 2024
+    <span>JIWU © 2024</span>
+    <span id="viewWrap">｜ <span id="viewCount"></span> views</span>
   </div>
-
-
 </div>
 
-
 <script>
-
-
-/* =========================
-   網頁資料設定
-========================= */
-
 const CONFIG={
-
-
-  /* Logo */
-
-  logo:
-  "https://raw.githubusercontent.com/jiwusales/imgh/main/images_1350/icon_9a717cff.png",
-
-
-  /* 名稱 */
-
-  name:
-  "JIWU吉物販售",
-
-
-  /* 介紹 */
-
-  bio:
-`花花ㄉ快樂寶寶吉散地 𓂃𓈒𓏸
-下面有連結可以找到我
-台中朋朋歡迎自取 ☆`,
-
-
-  /* Facebook */
-
-  facebook:{
-    url:
-    "https://www.facebook.com/profile.php?id=61586441756618"
-  },
-
-
-  /* Instagram */
-
-  instagram:{
-    url:
-    "https://www.instagram.com/jiwu_sales/"
-  },
-
-
-  /* Threads */
-
-  threads:{
-    url:
-    "https://www.threads.com/@jiwu_sales"
-  },
-
-
-  /* =========================
-     按鈕
-  ========================== */
-
+  logo:"https://raw.githubusercontent.com/jiwusales/imgh/main/images_1350/icon_9a717cff.png",
+  name:"JIWU吉物販售",
+  bio:`ᯓ★花花ㄉ快樂寶寶吉散地˖ ࣪ ★
+下面連結可以找到我
+台中朋朋歡迎一中自取(*˙︶˙*)ﾉ`,
+  facebook:{url:"https://www.facebook.com/profile.php?id=61586441756618"},
+  instagram:{url:"https://www.instagram.com/jiwu_sales/"},
+  threads:{url:"https://www.threads.com/@jiwu_sales"},
   links:[
-
-
     {
-      icon:
-      "https://raw.githubusercontent.com/jiwusales/imgh/main/images_1350/icon_9a717cff.png",
-
-      title:
-      "吉物官網 ♡ 寶寶目錄在這邊",
-
-      url:
-      "https://jiwusales.github.io/jiwu_menu/"
+      icon:"https://raw.githubusercontent.com/jiwusales/imgh/main/images_1350/icon_9a717cff.png",
+      title:"吉物官網 ♡ 寶寶目錄在這邊",
+      url:"https://jiwusales.github.io/jiwu_menu/"
     },
-
-
     {
-      icon:
-      "https://raw.githubusercontent.com/jiwusales/imgh/main/images_1350/icon_9a717cff.png",
-
-      title:
-      "最新開團",
-
-      url:
-      "https://jiwusales.github.io/jiwu_menu/NEWGOODS.html"
+      icon:"https://raw.githubusercontent.com/jiwusales/imgh/main/images_1350/icon_9a717cff.png",
+      title:"最新開團.ᐟ.ᐟ",
+      url:"https://jiwusales.github.io/jiwu_menu/NEWGOODS.html"
     },
-
-
     {
-      icon:
-      "https://jiwusales.github.io/imgh/images/20260912_165412.png",
-
-      title:
-      "這邊找花花 ♡",
-
-      url:
-      "https://line.me/R/ti/p/@tei8245t?ts=02051400&oat_content=url"
+      icon:"https://jiwusales.github.io/imgh/images/20260912_165412.png",
+      title:"這邊找花花 ♡",
+      url:"https://line.me/R/ti/p/@tei8245t?ts=02051400&oat_content=url"
     },
-
-
     {
-      icon:
-      "https://jiwusales.github.io/imgh/images/20260912_183953.png",
-
-      title:
-      "LINE群傳送門",
-
-      url:
-      "https://line.me/ti/g2/aS1Oba3cd9F17Y4FGZGIUmCKTYsrbiXuRA5hXw?utm_source=invitation&utm_medium=link_copy&utm_campaign=default"
+      icon:"https://jiwusales.github.io/imgh/images/20260912_183953.png",
+      title:"LINE群傳送門",
+      url:"https://line.me/ti/g2/aS1Oba3cd9F17Y4FGZGIUmCKTYsrbiXuRA5hXw?utm_source=invitation&utm_medium=link_copy&utm_campaign=default"
     },
-
-
     {
-      icon:
-      "https://jiwusales.github.io/imgh/images/20260912_184702.png",
-
-      title:
-      "JIWU 吉伊卡哇圖鑑",
-
-      url:
-      "https://jiwusales.github.io/jiwusales_chiikawa/"
+      icon:"https://jiwusales.github.io/imgh/images/20260912_184702.png",
+      title:"JIWU 吉伊寶寶圖鑑",
+      url:"https://jiwusales.github.io/jiwusales_chiikawa/"
     },
-
-
     {
-      icon:
-      "https://jiwusales.github.io/imgh/images/20260912_165122.png",
-
-      title:
-      "JIWU 白熊圖鑑",
-
-      url:
-      "https://jiwusales.github.io/jiwusales_nagano/"
+      icon:"https://jiwusales.github.io/imgh/images/20260912_165122.png",
+      title:"JIWU 白熊寶寶圖鑑",
+      url:"https://jiwusales.github.io/jiwusales_nagano/"
     }
-
-
   ]
-
 };
-
-
-/* =========================
-   建立頁面
-========================= */
 
 const $=id=>document.getElementById(id);
 
+$("logo").src=CONFIG.logo;
+$("name").textContent=CONFIG.name;
+$("bio").textContent=CONFIG.bio;
+$("facebookLink").href=CONFIG.facebook.url;
+$("igLink").href=CONFIG.instagram.url;
+$("threadsLink").href=CONFIG.threads.url;
 
-/* Logo */
+$("links").innerHTML=CONFIG.links.map(x=>`
+<a class="link" href="${x.url}" target="_blank">
+  <img class="link-icon" src="${x.icon}">
+  <span>${x.title}</span>
+</a>`).join("");
 
-$("logo").src=
-CONFIG.logo;
-
-
-/* 名稱 */
-
-$("name").textContent=
-CONFIG.name;
-
-
-/* 自介 */
-
-$("bio").textContent=
-CONFIG.bio;
-
-
-/* 社群連結 */
-
-$("facebookLink").href=
-CONFIG.facebook.url;
-
-$("igLink").href=
-CONFIG.instagram.url;
-
-$("threadsLink").href=
-CONFIG.threads.url;
-
-
-/* 產生按鈕 */
-
-$("links").innerHTML=
-
-CONFIG.links.map(x=>`
-
-<a
-  class="link"
-  href="${x.url}"
-  target="_blank"
->
-
-  <img
-    class="link-icon"
-    src="${x.icon}"
-  >
-
-  <span>
-    ${x.title}
-  </span>
-
-</a>
-
-`).join("");
-
-
+fetch("https://countapi.mileshilliard.com/api/v1/hit/jiwusales-link-home-20260912")
+  .then(r=>r.json())
+  .then(d=>{
+    const n=Number(d.value);
+    if(!Number.isFinite(n))return;
+    $("viewCount").textContent=n.toLocaleString();
+    $("viewWrap").style.display="inline";
+  })
+  .catch(()=>{});
 </script>
-
 </body>
 </html>
