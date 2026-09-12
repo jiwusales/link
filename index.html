@@ -8,12 +8,14 @@
 <style>
 *{box-sizing:border-box}
 :root{--main:#A9684C;--bg:#fafafa;--text:#333}
+
 body{
   margin:0;
   background:var(--bg);
   color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","Segoe UI",sans-serif;
 }
+
 .page{
   width:100%;
   max-width:520px;
@@ -21,6 +23,7 @@ body{
   margin:auto;
   padding:25px 22px 45px;
 }
+
 .profile{text-align:center}
 
 .logo{
@@ -37,6 +40,7 @@ body{
   font-size:20px;
   font-weight:800;
 }
+
 .bio{
   margin-top:8px;
   font-size:15px;
@@ -50,12 +54,14 @@ body{
   gap:35px;
   margin:20px 0 30px;
 }
+
 .social{
   min-width:100px;
   color:var(--main);
   text-decoration:none;
   text-align:center;
 }
+
 .social-icon{
   display:block;
   width:30px;
@@ -63,10 +69,12 @@ body{
   object-fit:contain;
   margin:0 auto;
 }
+
 .social-name{
   margin-top:6px;
   font-size:12px;
 }
+
 .social-count{
   margin-top:2px;
   font-size:15px;
@@ -79,6 +87,7 @@ body{
   flex-direction:column;
   gap:15px;
 }
+
 .link{
   position:relative;
   display:flex;
@@ -96,10 +105,12 @@ body{
   font-weight:700;
   transition:.15s;
 }
+
 .link:active{
   transform:scale(.98);
   background:#fff7f2;
 }
+
 .link-icon{
   position:absolute;
   left:17px;
@@ -107,6 +118,7 @@ body{
   height:25px;
   object-fit:contain;
 }
+
 .footer{
   margin-top:30px;
   text-align:center;
@@ -135,19 +147,17 @@ body{
     <div class="socials">
 
       <a id="igLink" class="social" target="_blank">
-        <img
-          class="social-icon"
-          src="https://jiwusales.github.io/imgh/images/20260912_184418.png"
-        >
+        <img class="social-icon"
+        src="https://jiwusales.github.io/imgh/images/20260912_184418.png">
+
         <div class="social-name">Instagram</div>
         <div id="igCount" class="social-count">...</div>
       </a>
 
       <a id="threadsLink" class="social" target="_blank">
-        <img
-          class="social-icon"
-          src="https://jiwusales.github.io/imgh/images/20260912_184428.png"
-        >
+        <img class="social-icon"
+        src="https://jiwusales.github.io/imgh/images/20260912_184428.png">
+
         <div class="social-name">Threads</div>
         <div id="threadsCount" class="social-count">...</div>
       </a>
@@ -166,9 +176,9 @@ body{
 
 <script>
 
-/* ==================================================
-   ↓↓↓ 以後主要修改這裡 ↓↓↓
-================================================== */
+/* ================================
+   主要資料
+================================ */
 
 const CONFIG={
 
@@ -222,19 +232,20 @@ const CONFIG={
   ]
 };
 
-/* ==================================================
-   ↑↑↑ 以後主要修改到這裡 ↑↑↑
-================================================== */
-
 const FOLLOWER_API=
 "https://script.google.com/macros/s/AKfycby40cWwvCULzxaKi6eO22sa9aYwuD8hHkvk6lUM90sQSKjr9r-4CCRUq09NUM-wd0e9/exec";
 
 const $=id=>document.getElementById(id);
 
-/* 頁面資料 */
+
+/* ================================
+   顯示基本資料
+================================ */
+
 $("logo").src=CONFIG.logo;
 $("name").textContent=CONFIG.name;
 $("bio").textContent=CONFIG.bio;
+
 $("igLink").href=CONFIG.instagram.url;
 $("threadsLink").href=CONFIG.threads.url;
 
@@ -246,9 +257,9 @@ $("links").innerHTML=CONFIG.links.map(x=>`
 `).join("");
 
 
-/* ==================================================
+/* ================================
    追蹤人數
-================================================== */
+================================ */
 
 function formatCount(n){
   n=Number(n);
@@ -264,80 +275,52 @@ function formatCount(n){
   return n.toLocaleString();
 }
 
-function jsonpFollower(){
 
-  return new Promise((resolve,reject)=>{
+/* GAS 會直接呼叫這個 */
+window.followerResult=function(d){
 
-    const cb=
-      "follower_"+Date.now()+"_"+Math.floor(Math.random()*99999);
+  console.log("GAS資料：",d);
 
-    const s=document.createElement("script");
+  $("igCount").textContent=
+    d && d.instagram!=null
+      ? formatCount(d.instagram)
+      : "--";
 
-    const timer=setTimeout(()=>{
-      cleanup();
-      reject(new Error("timeout"));
-    },15000);
+  $("threadsCount").textContent=
+    d && d.threads!=null
+      ? formatCount(d.threads)
+      : "--";
+};
 
-    function cleanup(){
-      clearTimeout(timer);
-      s.remove();
 
-      try{
-        delete window[cb];
-      }catch(e){}
-    }
+/* 載入 GAS */
+function loadFollowers(){
 
-    window[cb]=data=>{
-      cleanup();
-      resolve(data);
-    };
+  const s=document.createElement("script");
 
-    const params=new URLSearchParams({
-      callback:cb,
-      ig:CONFIG.instagram.url,
-      threads:CONFIG.threads.url,
-      t:Date.now()
-    });
+  s.src=
+    FOLLOWER_API+
+    "?callback=followerResult"+
+    "&ig="+encodeURIComponent(CONFIG.instagram.url)+
+    "&threads="+encodeURIComponent(CONFIG.threads.url)+
+    "&t="+Date.now();
 
-    s.src=FOLLOWER_API+"?"+params.toString();
-
-    s.onerror=()=>{
-      cleanup();
-      reject(new Error("load error"));
-    };
-
-    document.body.appendChild(s);
-  });
-}
-
-async function loadFollowers(){
-
-  $("igCount").textContent="...";
-  $("threadsCount").textContent="...";
-
-  try{
-
-    const d=await jsonpFollower();
-
-    console.log("追蹤數：",d);
-
-    $("igCount").textContent=
-      d?.instagram!=null
-        ?formatCount(d.instagram)
-        :"--";
-
-    $("threadsCount").textContent=
-      d?.threads!=null
-        ?formatCount(d.threads)
-        :"--";
-
-  }catch(e){
-
-    console.error("追蹤數載入失敗：",e);
-
+  s.onerror=function(){
     $("igCount").textContent="--";
     $("threadsCount").textContent="--";
-  }
+  };
+
+  document.body.appendChild(s);
+
+
+  /* 超過 15 秒還沒收到資料才顯示 -- */
+  setTimeout(()=>{
+    if($("igCount").textContent==="...")
+      $("igCount").textContent="--";
+
+    if($("threadsCount").textContent==="...")
+      $("threadsCount").textContent="--";
+  },15000);
 }
 
 loadFollowers();
