@@ -27,7 +27,6 @@ body{
 }
 .profile{text-align:center}
 
-/* LOGO 不再裁成圓形 */
 .logo{
   display:block;
   width:120px;
@@ -49,7 +48,6 @@ body{
   white-space:pre-line;
 }
 
-/* IG / Threads */
 .socials{
   display:flex;
   justify-content:center;
@@ -80,7 +78,6 @@ body{
   min-height:20px;
 }
 
-/* 按鈕 */
 .links{
   display:flex;
   flex-direction:column;
@@ -178,7 +175,7 @@ body{
 
 const CONFIG={
 
-  logo:"https://jiwusales.github.io/imgh/images/20260912_181242.png",
+  logo:"https://raw.githubusercontent.com/jiwusales/imgh/main/images_1350/icon_9a717cff.png",
 
   name:"JIWU吉物販售",
 
@@ -217,12 +214,12 @@ const CONFIG={
     },
     {
       icon:"https://jiwusales.github.io/imgh/images/20260912_184702.png",
-      title:"JIWU 吉伊圖鑑",
+      title:"JIWU 吉伊卡哇圖鑑",
       url:"https://jiwusales.github.io/jiwusales_chiikawa/"
     },
     {
       icon:"https://jiwusales.github.io/imgh/images/20260912_165122.png",
-      title:"JIWU 自熊圖鑑",
+      title:"JIWU 白熊圖鑑",
       url:"https://jiwusales.github.io/jiwusales_nagano/"
     }
   ]
@@ -231,6 +228,9 @@ const CONFIG={
 /* ==================================================
    ↑↑↑ 主要修改到這裡 ↑↑↑
 ================================================== */
+
+const FOLLOWER_API=
+"https://script.google.com/macros/s/AKfycby40cWwvCULzxaKi6eO22sa9aYwuD8hHkvk6lUM90sQSKjr9r-4CCRUq09NUM-wd0e9/exec";
 
 const $=id=>document.getElementById(id);
 
@@ -250,55 +250,61 @@ $("links").innerHTML=CONFIG.links.map(x=>`
 
 $("year").textContent=new Date().getFullYear();
 
-/* 追蹤人數 */
-async function getFollowers(url){
-  const api="https://pulse.walls.sh/profile?url="+encodeURIComponent(url);
+/* ==================================================
+   追蹤人數
+================================================== */
 
-  for(let i=0;i<2;i++){
-    try{
-      const r=await fetch(api+"&t="+Date.now(),{
-        cache:"no-store"
-      });
-
-      if(!r.ok)throw new Error("HTTP "+r.status);
-
-      const d=await r.json();
-
-      if(d.followers!==null && d.followers!==undefined)
-        return Number(d.followers);
-
-    }catch(e){
-      console.log("追蹤數取得失敗：",url,e);
-    }
-
-    await new Promise(r=>setTimeout(r,1000));
-  }
-
-  return null;
-}
-
-async function loadFollowers(){
-
-  const [ig,threads]=await Promise.all([
-    getFollowers(CONFIG.instagram.url),
-    getFollowers(CONFIG.threads.url)
-  ]);
+function followerResult(d){
 
   $("igCount").textContent=
-    ig!==null ? formatCount(ig) : "--";
+    d&&d.instagram!=null
+      ?formatCount(d.instagram)
+      :"--";
 
   $("threadsCount").textContent=
-    threads!==null ? formatCount(threads) : "--";
+    d&&d.threads!=null
+      ?formatCount(d.threads)
+      :"--";
+}
+
+function loadFollowers(){
+
+  $("igCount").textContent="...";
+  $("threadsCount").textContent="...";
+
+  const s=document.createElement("script");
+
+  s.src=
+    FOLLOWER_API+
+    "?callback=followerResult"+
+    "&ig="+encodeURIComponent(CONFIG.instagram.url)+
+    "&threads="+encodeURIComponent(CONFIG.threads.url)+
+    "&t="+Date.now();
+
+  s.onerror=()=>{
+    $("igCount").textContent="--";
+    $("threadsCount").textContent="--";
+  };
+
+  document.body.appendChild(s);
 }
 
 function formatCount(n){
+
   n=Number(n);
 
+  if(!Number.isFinite(n))
+    return "--";
+
   if(n>=10000)
-    return (n/10000).toFixed(1).replace(".0","")+"萬";
+    return (n/10000)
+      .toFixed(1)
+      .replace(".0","")+"萬";
 
   if(n>=1000)
-    return (n/1000).toFixed(1).replace(".0","")+"K";
+    return (n/1000)
+      .toFixed(1)
+      .replace(".0","")+"K";
 
   return n.toLocaleString();
 }
