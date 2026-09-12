@@ -11,7 +11,6 @@
   --main:#A9684C;
   --bg:#fafafa;
   --text:#333;
-  --sub:#777;
 }
 body{
   margin:0;
@@ -24,17 +23,22 @@ body{
   max-width:520px;
   min-height:100vh;
   margin:auto;
-  padding:55px 22px 50px;
+  padding:25px 22px 45px;
 }
 .profile{text-align:center}
+
+/* LOGO 不再裁成圓形 */
 .logo{
-  width:110px;
-  height:110px;
-  border-radius:50%;
-  object-fit:cover;
+  display:block;
+  width:120px;
+  height:auto;
+  max-height:120px;
+  object-fit:contain;
+  margin:0 auto;
 }
+
 .name{
-  margin-top:18px;
+  margin-top:10px;
   font-size:20px;
   font-weight:800;
 }
@@ -44,32 +48,39 @@ body{
   line-height:1.8;
   white-space:pre-line;
 }
+
+/* IG / Threads */
 .socials{
   display:flex;
   justify-content:center;
-  gap:25px;
-  margin:24px 0 32px;
+  gap:35px;
+  margin:20px 0 30px;
 }
 .social{
-  min-width:95px;
+  min-width:100px;
   color:var(--main);
   text-decoration:none;
   text-align:center;
 }
 .social-icon{
-  font-size:27px;
-  font-weight:700;
-  line-height:1;
+  display:block;
+  width:30px;
+  height:30px;
+  object-fit:contain;
+  margin:0 auto;
 }
 .social-name{
-  margin-top:7px;
+  margin-top:6px;
   font-size:12px;
 }
 .social-count{
   margin-top:2px;
   font-size:15px;
   font-weight:800;
+  min-height:20px;
 }
+
+/* 按鈕 */
 .links{
   display:flex;
   flex-direction:column;
@@ -130,15 +141,21 @@ body{
     <div class="socials">
 
       <a id="igLink" class="social" target="_blank">
-        <div class="social-icon">◎</div>
+        <img
+          class="social-icon"
+          src="https://jiwusales.github.io/imgh/images/20260912_184418.png"
+        >
         <div class="social-name">Instagram</div>
-        <div id="igCount" class="social-count"></div>
+        <div id="igCount" class="social-count">...</div>
       </a>
 
       <a id="threadsLink" class="social" target="_blank">
-        <div class="social-icon">@</div>
+        <img
+          class="social-icon"
+          src="https://jiwusales.github.io/imgh/images/20260912_184428.png"
+        >
         <div class="social-name">Threads</div>
-        <div id="threadsCount" class="social-count"></div>
+        <div id="threadsCount" class="social-count">...</div>
       </a>
 
     </div>
@@ -156,7 +173,7 @@ body{
 <script>
 
 /* ==================================================
-   ↓↓↓ 以後只要修改這個區域 ↓↓↓
+   ↓↓↓ 以後主要修改這裡 ↓↓↓
 ================================================== */
 
 const CONFIG={
@@ -170,12 +187,12 @@ const CONFIG={
 台中朋朋歡迎自取 ☆`,
 
   instagram:{
-  url:"https://www.instagram.com/jiwu_sales/"
-},
+    url:"https://www.instagram.com/jiwu_sales/"
+  },
 
-threads:{
-  url:"https://www.threads.com/@jiwu_sales"
-},
+  threads:{
+    url:"https://www.threads.net/@jiwu_sales"
+  },
 
   links:[
     {
@@ -199,7 +216,7 @@ threads:{
       url:"https://line.me/ti/g2/aS1Oba3cd9F17Y4FGZGIUmCKTYsrbiXuRA5hXw?utm_source=invitation&utm_medium=link_copy&utm_campaign=default"
     },
     {
-      icon:"https://jiwusales.github.io/imgh/images/20260912_180747.png",
+      icon:"https://jiwusales.github.io/imgh/images/20260912_184702.png",
       title:"JIWU 吉伊圖鑑",
       url:"https://jiwusales.github.io/jiwusales_chiikawa/"
     },
@@ -209,11 +226,10 @@ threads:{
       url:"https://jiwusales.github.io/jiwusales_nagano/"
     }
   ]
-
 };
 
 /* ==================================================
-   ↑↑↑ 以後只要修改上面 ↑↑↑
+   ↑↑↑ 主要修改到這裡 ↑↑↑
 ================================================== */
 
 const $=id=>document.getElementById(id);
@@ -225,48 +241,69 @@ $("bio").textContent=CONFIG.bio;
 $("igLink").href=CONFIG.instagram.url;
 $("threadsLink").href=CONFIG.threads.url;
 
-async function loadFollowers(){
-  const list=[
-    ["igCount",CONFIG.instagram.url],
-    ["threadsCount",CONFIG.threads.url]
-  ];
-
-  await Promise.all(list.map(async([id,url])=>{
-    try{
-      $(id).textContent="...";
-      const r=await fetch(
-        "https://pulse.walls.sh/profile?url="+encodeURIComponent(url)
-      );
-      if(!r.ok)throw new Error();
-      const d=await r.json();
-      $(id).textContent=d.followers!=null
-        ?formatCount(d.followers)
-        :"--";
-    }catch(e){
-      $(id).textContent="--";
-    }
-  }));
-}
-
-loadFollowers();
-
 $("links").innerHTML=CONFIG.links.map(x=>`
 <a class="link" href="${x.url}" target="_blank">
-  ${x.icon?`<img class="link-icon" src="${x.icon}">`:""}
+  <img class="link-icon" src="${x.icon}">
   <span>${x.title}</span>
 </a>
 `).join("");
 
 $("year").textContent=new Date().getFullYear();
 
+/* 追蹤人數 */
+async function getFollowers(url){
+  const api="https://pulse.walls.sh/profile?url="+encodeURIComponent(url);
+
+  for(let i=0;i<2;i++){
+    try{
+      const r=await fetch(api+"&t="+Date.now(),{
+        cache:"no-store"
+      });
+
+      if(!r.ok)throw new Error("HTTP "+r.status);
+
+      const d=await r.json();
+
+      if(d.followers!==null && d.followers!==undefined)
+        return Number(d.followers);
+
+    }catch(e){
+      console.log("追蹤數取得失敗：",url,e);
+    }
+
+    await new Promise(r=>setTimeout(r,1000));
+  }
+
+  return null;
+}
+
+async function loadFollowers(){
+
+  const [ig,threads]=await Promise.all([
+    getFollowers(CONFIG.instagram.url),
+    getFollowers(CONFIG.threads.url)
+  ]);
+
+  $("igCount").textContent=
+    ig!==null ? formatCount(ig) : "--";
+
+  $("threadsCount").textContent=
+    threads!==null ? formatCount(threads) : "--";
+}
+
 function formatCount(n){
-  n=Number(n)||0;
+  n=Number(n);
+
   if(n>=10000)
     return (n/10000).toFixed(1).replace(".0","")+"萬";
+
   if(n>=1000)
     return (n/1000).toFixed(1).replace(".0","")+"K";
+
   return n.toLocaleString();
 }
+
+loadFollowers();
 
 </script>
 
