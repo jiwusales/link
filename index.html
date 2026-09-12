@@ -36,7 +36,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,B
 }
 .link-icon{position:absolute;left:17px;width:25px;height:25px;object-fit:contain}
 .link span{text-align:left}
-.links .link:nth-child(3){border-color:#D9C0FA}
+.links .link:nth-child(3){border-color:#989FC0}
 .footer{margin-top:30px;display:flex;justify-content:center;align-items:center;gap:6px;color:#bbb;font-size:11px}
 #viewWrap{display:none}
 @media(max-width:380px){
@@ -51,15 +51,22 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,B
     <img id="logo" class="logo">
     <div id="name" class="name"></div>
     <div id="bio" class="bio"></div>
+
     <div class="socials">
       <a id="facebookLink" class="social" target="_blank">
         <img class="social-icon" src="https://jiwusales.github.io/imgh/images/20260912_200545.png">
       </a>
+
       <a id="igLink" class="social" target="_blank">
         <img class="social-icon" src="https://jiwusales.github.io/imgh/images/20260912_184418.png">
       </a>
+
       <a id="threadsLink" class="social" target="_blank">
         <img class="social-icon" src="https://jiwusales.github.io/imgh/images/20260912_184428.png">
+      </a>
+
+      <a id="mapLink" class="social" target="_blank">
+        <img class="social-icon" src="https://jiwusales.github.io/imgh/images/20260912_211215.png">
       </a>
     </div>
   </div>
@@ -82,6 +89,7 @@ const CONFIG={
   facebook:{url:"https://www.facebook.com/profile.php?id=61586441756618"},
   instagram:{url:"https://www.instagram.com/jiwu_sales/"},
   threads:{url:"https://www.threads.com/@jiwu_sales"},
+  map:{url:"https://maps.app.goo.gl/69dD6Q39ykvDvkfw8?g_st=ic"},
   links:[
     {
       icon:"https://raw.githubusercontent.com/jiwusales/imgh/main/images_1350/icon_9a717cff.png",
@@ -89,7 +97,7 @@ const CONFIG={
       url:"https://jiwusales.github.io/jiwu_menu/"
     },
     {
-      icon:"https://jiwusales.github.io/imgh/images/20260912_205714.png",
+      icon:"https://jiwusales.github.io/imgh/images/20260912_211854.png",
       title:"最新開團 (๑•̀ᴗ-)b",
       url:"https://jiwusales.github.io/jiwu_menu/NEWGOODS.html"
     },
@@ -124,6 +132,7 @@ $("bio").textContent=CONFIG.bio;
 $("facebookLink").href=CONFIG.facebook.url;
 $("igLink").href=CONFIG.instagram.url;
 $("threadsLink").href=CONFIG.threads.url;
+$("mapLink").href=CONFIG.map.url;
 
 $("links").innerHTML=CONFIG.links.map(x=>`
 <a class="link" href="${x.url}" target="_blank">
