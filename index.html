@@ -8,14 +8,12 @@
 <style>
 *{box-sizing:border-box}
 :root{--main:#A9684C;--bg:#fafafa;--text:#333}
-
 body{
   margin:0;
   background:var(--bg);
   color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","Segoe UI",sans-serif;
 }
-
 .page{
   width:100%;
   max-width:520px;
@@ -23,9 +21,7 @@ body{
   margin:auto;
   padding:25px 22px 45px;
 }
-
 .profile{text-align:center}
-
 .logo{
   display:block;
   width:120px;
@@ -34,34 +30,29 @@ body{
   object-fit:contain;
   margin:0 auto;
 }
-
 .name{
   margin-top:10px;
   font-size:20px;
   font-weight:800;
 }
-
 .bio{
   margin-top:8px;
   font-size:15px;
   line-height:1.8;
   white-space:pre-line;
 }
-
 .socials{
   display:flex;
   justify-content:center;
   gap:35px;
   margin:20px 0 30px;
 }
-
 .social{
   min-width:100px;
   color:var(--main);
   text-decoration:none;
   text-align:center;
 }
-
 .social-icon{
   display:block;
   width:30px;
@@ -69,25 +60,21 @@ body{
   object-fit:contain;
   margin:0 auto;
 }
-
 .social-name{
   margin-top:6px;
   font-size:12px;
 }
-
 .social-count{
   margin-top:2px;
   font-size:15px;
   font-weight:800;
   min-height:20px;
 }
-
 .links{
   display:flex;
   flex-direction:column;
   gap:15px;
 }
-
 .link{
   position:relative;
   display:flex;
@@ -105,12 +92,10 @@ body{
   font-weight:700;
   transition:.15s;
 }
-
 .link:active{
   transform:scale(.98);
   background:#fff7f2;
 }
-
 .link-icon{
   position:absolute;
   left:17px;
@@ -118,14 +103,12 @@ body{
   height:25px;
   object-fit:contain;
 }
-
 .footer{
   margin-top:30px;
   text-align:center;
   color:#bbb;
   font-size:11px;
 }
-
 @media(max-width:380px){
   .page{padding-left:15px;padding-right:15px}
   .link{font-size:14px}
@@ -168,17 +151,11 @@ body{
 
   <div id="links" class="links"></div>
 
-  <div class="footer">
-    JIWU © 2024
-  </div>
+  <div class="footer">JIWU © 2024</div>
 
 </div>
 
 <script>
-
-/* ================================
-   主要資料
-================================ */
 
 const CONFIG={
 
@@ -237,15 +214,9 @@ const FOLLOWER_API=
 
 const $=id=>document.getElementById(id);
 
-
-/* ================================
-   顯示基本資料
-================================ */
-
 $("logo").src=CONFIG.logo;
 $("name").textContent=CONFIG.name;
 $("bio").textContent=CONFIG.bio;
-
 $("igLink").href=CONFIG.instagram.url;
 $("threadsLink").href=CONFIG.threads.url;
 
@@ -256,11 +227,6 @@ $("links").innerHTML=CONFIG.links.map(x=>`
 </a>
 `).join("");
 
-
-/* ================================
-   追蹤人數
-================================ */
-
 function formatCount(n){
   n=Number(n);
   if(!Number.isFinite(n))return "--";
@@ -268,25 +234,16 @@ function formatCount(n){
   return n.toLocaleString();
 }
 
-
-/* GAS 會直接呼叫這個 */
 window.followerResult=function(d){
-
-  console.log("GAS資料：",d);
+  console.log("GAS 回傳：",d);
 
   $("igCount").textContent=
-    d && d.instagram!=null
-      ? formatCount(d.instagram)
-      : "--";
+    d?.instagram!=null?formatCount(d.instagram):"--";
 
   $("threadsCount").textContent=
-    d && d.threads!=null
-      ? formatCount(d.threads)
-      : "--";
+    d?.threads!=null?formatCount(d.threads):"--";
 };
 
-
-/* 載入 GAS */
 function loadFollowers(){
   const s=document.createElement("script");
 
